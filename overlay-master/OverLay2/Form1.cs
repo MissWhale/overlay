@@ -10,15 +10,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Management;
 using System.Diagnostics;
-using OpenHardwareMonitor.Hardware;
+using hardcs;
+using System.Runtime.InteropServices;
+
 namespace OverLay2
 {
     public partial class Form1 : Form
     {
-        private PerformanceCounter Ram = new PerformanceCounter("Memory", "Available MBytes");
-        Computer computer = new Computer() { CPUEnabled = true,RAMEnabled = true };
+        [DllImport("user32.dll")]
+        private static extern int RegisterHotKey(int hwnd, int id, int fsModifiers, int vk);
+        [DllImport("user32.dll")]
+        private static extern int UnregisterHotKey(int hwnd, int id);
+        public hardeware hard = new hardeware();
         public Thread checksystem;
         public static int totalm = 0;
+        public Form2 showForm = new Form2();
         public Form1()
         {
             InitializeComponent();
@@ -27,135 +33,41 @@ namespace OverLay2
         private void Form1_Load(object sender, EventArgs e)
         {
             CheckForIllegalCrossThreadCalls = false;
+            this.notifyIcon1.Visible = true;
+            notifyIcon1.ContextMenuStrip = contextMenuStrip1;
+            RegisterHotKey((int)this.Handle, 0, 0x0, (int)Keys.F9);
             Bunifu.Framework.Lib.Elipse.Apply(this, 20);
             Bunifu.Framework.Lib.Elipse.Apply(this.header, 5);
-            GetMemInfor();
-            computer.Open();
             checksystem = new Thread(check);
             checksystem.Start();
         }
 
+        protected override void WndProc(ref Message m) 
+        {
+            base.WndProc(ref m);
 
-        //private void bunifuImageButton3_Click(object sender, EventArgs e)
-        //{
-        //    this.checksystem.Abort();
-        //    this.Close();
-        //}
-
-        //}
-
+            if (m.Msg == (int)0x312) 
+            {
+                if (m.WParam == (IntPtr)0x0) 
+                {
+                    PictureBox picture = new PictureBox();
+                    picture.domaincapture();
+                }
+            }
+        }
         private void check()
         {
-            int freem = 0,useram=0,ramper=0;
             while (true)
             {
-                freem = int.Parse(Ram.NextValue().ToString());
-                useram = totalm - freem;
-                ramper = Convert.ToInt32(float.Parse(useram.ToString()) / float.Parse(totalm.ToString()) * 100);
-                this.ramperlbl.Text = ramper.ToString();
-                foreach (IHardware hardware in computer.Hardware)
-                {
-                    hardware.Update();
-                    if (hardware.HardwareType.ToString() == "CPU")
-                    {
-                        foreach (ISensor sensor in hardware.Sensors)
-                        {
-                            //MessageBox.Show(sensor.Name.ToString() + " : " + sensor.Value.ToString() + " - " + sensor.SensorType.ToString());
-                            if (sensor.SensorType == SensorType.Load && sensor.Name.ToString() == "CPU Total")
-                            {
-                                this.cpuperlbl.Text = Convert.ToInt32(sensor.Value).ToString();
-                            }
-                        }
-                    }
-                }
+                this.cpuperlbl.Text = hard.Cpuper().ToString();
+                this.ramperlbl.Text = hard.Ramper().ToString();
+                //hard.Gputemp();
                 Thread.Sleep(1000);
             }
-            //MessageBox.Show(ramper.ToString());
-            //while (true)
-            //{
-            //    //float RamUse = Ram.NextValue();
-            //    //CheckForIllegalCrossThreadCalls = false;
-            //    //freem = Math.Round(RamUse / 1024, 1);
-            //    //usem = (double)totalm - freem;
-            //    //this.ramuselb.Text = usem.ToString();
-            //    //this.ramfreelb.Text = freem.ToString();
-            //    //ramper = Convert.ToInt32(usem / (double)totalm * 100);
-            //    //this.ramperlb.Text = ramper.ToString();
-            //    //this.ramspin.Value = ramper;
-            //    //foreach (IHardware hardware in computer.Hardware)
-            //    //{
-            //    //    hardware.Update();
-            //    //    if (hardware.HardwareType.ToString() == "CPU")
-            //    //    {
-            //    //        this.cpuname.Text = hardware.Name.ToString();
-            //    //        foreach (ISensor sensor in hardware.Sensors)
-            //    //        {
-            //    //            //MessageBox.Show(sensor.Name.ToString() + " : " + sensor.Value.ToString() + " - " + sensor.SensorType.ToString());
-            //    //            if (sensor.SensorType == SensorType.Load && sensor.Name.ToString() == "CPU Total")
-            //    //            {
-            //    //                this.cpuuselb.Text = Convert.ToInt32(sensor.Value).ToString();
-            //    //                this.cpuspin2.Value = Convert.ToInt32(sensor.Value);
-            //    //            }
-            //    //            if (sensor.SensorType == SensorType.Temperature && sensor.Name.ToString() == "CPU Package")
-            //    //            {
-            //    //                this.cputemplb.Text = Convert.ToInt32(sensor.Value).ToString();
-            //    //                this.cpuspin1.Value = Convert.ToInt32(sensor.Value);
-            //    //            }
-            //    //            if (sensor.SensorType == SensorType.Clock && sensor.Name.ToString() == "CPU Core #6")
-            //    //            {
-            //    //                this.cpuclock.Text = Convert.ToInt32(sensor.Value).ToString();
-            //    //            }
-
-            //    //        }
-            //    //    }
-            //    //    else if (hardware.HardwareType.ToString() == "GpuNvidia")
-            //    //    {
-            //    //        this.gpuname.Text = hardware.Name.ToString();
-            //    //        foreach (ISensor sensor in hardware.Sensors)
-            //    //        {
-            //    //            //MessageBox.Show(sensor.Name.ToString() + " : " + sensor.Value.ToString() + " - "+ sensor.SensorType.ToString());
-            //    //            if (sensor.SensorType == SensorType.Load && sensor.Name.ToString() == "GPU Core")
-            //    //            {
-            //    //                this.gpuuselb.Text = sensor.Value.ToString();
-            //    //                this.gpuspin2.Value = Convert.ToInt32(sensor.Value);
-            //    //            }
-            //    //            if (sensor.SensorType == SensorType.Clock && sensor.Name.ToString() == "GPU Core")
-            //    //            {
-            //    //                this.gpuclock.Text = Convert.ToInt32(sensor.Value).ToString();
-            //    //            }
-            //    //            if (sensor.SensorType == SensorType.Temperature)
-            //    //            {
-            //    //                this.gputemplb.Text = Convert.ToInt32(sensor.Value).ToString();
-            //    //                this.gpuspin1.Value = Convert.ToInt32(sensor.Value);
-            //    //            }
-            //    //            if (sensor.SensorType == SensorType.Fan)
-            //    //            {
-            //    //                this.gpufan.Text = sensor.Value.ToString();
-            //    //            }
-
-            //    //        }
-            //    //    }
-
-            //    //}
-        }
-            //}
-            //private void pn1_Paint(object sender, PaintEventArgs e)
-            //{
-            //}
-            private void GetMemInfor()
-        {
-            ManagementClass cls = new ManagementClass("Win32_OperatingSystem");
-            ManagementObjectCollection instances = cls.GetInstances();
-            foreach (ManagementObject instance in instances)
-            {
-                //MessageBox.Show(instance["TotalVisibleMemorySize"].ToString());
-                //totalm = float.Parse(instance["TotalVisibleMemorySize"].ToString());
-                totalm = int.Parse(instance["TotalVisibleMemorySize"].ToString());
-            }
-            totalm = totalm / 1024;
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
+            UnregisterHotKey((int)this.Handle, 0);
             this.checksystem.Abort();
         }
 
@@ -166,7 +78,19 @@ namespace OverLay2
             showForm.Location = new Point(this.Location.X, this.Location.Y);
             this.Hide();
         }
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+            
+        }
 
+        private void StripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            this.checksystem.Abort();
+            //MessageBox.Show(showForm.checks.ThreadState.ToString());
+            //showForm.checks.Abort();
+            UnregisterHotKey((int)this.Handle, 0);
+            Application.Exit();
+        }
     }
 }
 //112, 6

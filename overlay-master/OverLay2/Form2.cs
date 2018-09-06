@@ -9,14 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
-using OpenHardwareMonitor.Hardware;
 namespace OverLay2
 {
     public partial class Form2 : Form
     {
         Form1 frm1;
-        private PerformanceCounter Ram = new PerformanceCounter("Memory", "Available MBytes");
-        Computer com = new Computer() { CPUEnabled = true, GPUEnabled = true, RAMEnabled = true };
         public Thread checks;
         public Form2()
         {
@@ -31,62 +28,80 @@ namespace OverLay2
         {
             Bunifu.Framework.Lib.Elipse.Apply(this, 5);
             Bunifu.Framework.Lib.Elipse.Apply(this.panel1, 5);
-            com.Open();
             checks = new Thread(check);
             checks.Start();
         }
         private void check()
         {
-            int freem = 0, useram = 0, ramper = 0;
-            double fm = 0.0, um = 0.0;
-            this.totalramlbl.Text= (Form1.totalm/1000).ToString()+"GB";
+            this.cpunamelbl.Text= frm1.hard.Cpuname();
+            this.totalramlbl.Text = frm1.hard.Ramname()+" "+Math.Round((frm1.hard.Ramuse() + frm1.hard.Ramfree())).ToString()+"GB";
             while (true)
             {
-                freem = int.Parse(Ram.NextValue().ToString());
-                useram = Form1.totalm - freem;
-                ramper = Convert.ToInt32(float.Parse(useram.ToString()) / float.Parse(Form1.totalm.ToString()) * 100);
-                fm = Math.Round((double)freem / 1024, 2);
-                um = Math.Round((double)useram / 1024, 2);
-                this.ramuselbl.Text= um.ToString() + "GB";
-                this.ramfreelbl.Text = fm.ToString() + "GB";
-                this.rampercircle.Value = ramper;
-                foreach (IHardware hardware in com.Hardware)
-                {
-                    hardware.Update();
-                    if (hardware.HardwareType.ToString() == "CPU")
-                    {
-                        this.cpunamelbl.Text = hardware.Name.ToString();
-                        foreach (ISensor sensor in hardware.Sensors)
-                        {
-                            //MessageBox.Show(sensor.Name.ToString() + " : " + sensor.Value.ToString() + " - " + sensor.SensorType.ToString());
-                            if (sensor.SensorType == SensorType.Load && sensor.Name.ToString() == "CPU Total")
-                            {
-                                this.cpupercircle.Value = Convert.ToInt32(sensor.Value);
-                            }
-                            if (sensor.SensorType == SensorType.Temperature && sensor.Name.ToString() == "CPU Package")
-                            {
-                                this.cputemplbl.Text = Convert.ToInt32(sensor.Value).ToString();
-                                this.cputempcircle.Value = Convert.ToInt32(sensor.Value);
-                            }
-                        }
-                    }
-                    if (hardware.HardwareType.ToString() == "RAM")
-                    {
-                        //MessageBox.Show(hardware.Name.ToString());
-                        foreach (ISensor sensor in hardware.Sensors)
-                        {
-                            //MessageBox.Show(sensor.Name.ToString() + " : " + sensor.Value.ToString() + " - " + sensor.SensorType.ToString());
-                        }
-                    }
-                }
+                this.cpupercircle.Value = frm1.hard.Cpuper();
+                this.cputempcircle.Value = frm1.hard.Cputemp();
+                this.cputemplbl.Text = frm1.hard.Cputemp().ToString();
+                this.gpunamelbl.Text = frm1.hard.Gpuname();
+                this.gpupercircle.Value = frm1.hard.Gpuper();
+                this.gputempcircle.Value = frm1.hard.Gputemp();
+                this.gputemplbl.Text = frm1.hard.Gputemp().ToString();
+                this.rampercircle.Value = frm1.hard.Ramper();
+                this.ramuselbl.Text = frm1.hard.Ramuse().ToString()+"GB";
+                this.ramfreelbl.Text = frm1.hard.Ramfree().ToString()+"GB";
                 Thread.Sleep(1000);
             }
         }
         private void settingbutton2_Click(object sender, EventArgs e)
         {
+            frm1.Location = new Point(this.Location.X, this.Location.Y);
             frm1.Show();
             this.checks.Abort();
             this.Close();
+        }
+
+        private void screenshotbtn_Click(object sender, EventArgs e)
+        {
+            PictureBox.imagenumber = int.Parse(this.indextbx.Text);
+            PictureBox picture = new PictureBox();
+            picture.domaincapture();
+        }
+
+        private void screenshotsetting_Click(object sender, EventArgs e)
+        {
+            if (autoindex.Visible)
+            {
+                autoindex.Hide();
+                indexlbl.Hide();
+                indextbx.Hide();
+            }
+            else
+            {
+                autoindex.Show();
+                indexlbl.Show();
+                indextbx.Show();
+            }
+        }
+        private void autoindex_OnChange(object sender, EventArgs e)
+        {
+            if (autoindex.Checked)
+            {
+                indextbx.Enabled = true;
+                PictureBox.idxcheck = 1;
+            }
+            else
+            {
+                indextbx.Enabled = false;
+                PictureBox.idxcheck = 0;
+            }
+        }
+
+        private void indextbx_Leave(object sender, EventArgs e)
+        {
+            PictureBox.imagenumber = int.Parse(this.indextbx.Text);
+        }
+
+        private void indextbx_KeyUp(object sender, KeyEventArgs e)
+        {
+            PictureBox.imagenumber = int.Parse(this.indextbx.Text);
         }
     }
 }

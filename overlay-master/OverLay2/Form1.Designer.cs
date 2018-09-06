@@ -46,8 +46,12 @@
             this.bunifuDragControl5 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.bunifuDragControl6 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
             this.bunifuDragControl7 = new Bunifu.Framework.UI.BunifuDragControl(this.components);
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.StripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.header.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.settingbutton)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // header
@@ -112,7 +116,7 @@
             this.ramperlbl.Name = "ramperlbl";
             this.ramperlbl.Size = new System.Drawing.Size(26, 12);
             this.ramperlbl.TabIndex = 0;
-            this.ramperlbl.Text = "100";
+            this.ramperlbl.Text = "0";
             this.ramperlbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // cpuperlbl
@@ -125,8 +129,8 @@
             this.cpuperlbl.Location = new System.Drawing.Point(43, 7);
             this.cpuperlbl.Name = "cpuperlbl";
             this.cpuperlbl.Size = new System.Drawing.Size(28, 10);
-            this.cpuperlbl.TabIndex = 100;
-            this.cpuperlbl.Text = "100";
+            this.cpuperlbl.TabIndex = 0;
+            this.cpuperlbl.Text = "0";
             this.cpuperlbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // ramlbl
@@ -205,6 +209,28 @@
             this.bunifuDragControl7.TargetControl = this.bunifuCustomLabel2;
             this.bunifuDragControl7.Vertical = true;
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(99, 26);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // StripMenuItem
+            // 
+            this.StripMenuItem.Name = "StripMenuItem";
+            this.StripMenuItem.Size = new System.Drawing.Size(98, 22);
+            this.StripMenuItem.Text = "종료";
+            this.StripMenuItem.Click += new System.EventHandler(this.StripMenuItem_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -212,10 +238,11 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.ClientSize = new System.Drawing.Size(194, 26);
             this.Controls.Add(this.header);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "Form1";
+            this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.TopMost = true;
@@ -224,6 +251,7 @@
             this.header.ResumeLayout(false);
             this.header.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.settingbutton)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -245,6 +273,9 @@
         private Bunifu.Framework.UI.BunifuDragControl bunifuDragControl6;
         private Bunifu.Framework.UI.BunifuDragControl bunifuDragControl7;
         private Bunifu.Framework.UI.BunifuImageButton settingbutton;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem StripMenuItem;
     }
 }
 

@@ -24,3 +24,4 @@ C:\Users\ahrrl\Desktop\overlay-master\overlay-master\OverLay2\obj\Debug\OverLay2
 C:\Users\ahrrl\Desktop\overlay-master\overlay-master\OverLay2\obj\Debug\OverLay2.exe
 C:\Users\ahrrl\Desktop\overlay-master\overlay-master\OverLay2\obj\Debug\OverLay2.pdb
 C:\Users\ahrrl\Desktop\overlay-master\overlay-master\OverLay2\obj\Debug\OverLay2.Form2.resources
+C:\Users\ahrrl\Desktop\overlay-master\overlay-master\OverLay2\obj\Debug\OverLay2.PictureBox.resources
