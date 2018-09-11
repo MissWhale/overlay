@@ -62,6 +62,9 @@
             this.screenshotsetting = new Bunifu.Framework.UI.BunifuImageButton();
             this.screenshotbtn = new Bunifu.Framework.UI.BunifuImageButton();
             this.indexlbl = new Bunifu.Framework.UI.BunifuCustomLabel();
+            this.pathlbl = new Bunifu.Framework.UI.BunifuCustomLabel();
+            this.Pathbtn = new Bunifu.Framework.UI.BunifuImageButton();
+            this.pthlbl = new Bunifu.Framework.UI.BunifuCustomLabel();
             this.panel1.SuspendLayout();
             this.bunifuCards2.SuspendLayout();
             this.bunifuCards3.SuspendLayout();
@@ -70,6 +73,7 @@
             this.bunifuCards4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotsetting)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotbtn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Pathbtn)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -450,15 +454,18 @@
             this.bunifuCards4.color = System.Drawing.Color.Red;
             this.bunifuCards4.Controls.Add(this.indextbx);
             this.bunifuCards4.Controls.Add(this.autoindex);
+            this.bunifuCards4.Controls.Add(this.Pathbtn);
             this.bunifuCards4.Controls.Add(this.screenshotsetting);
             this.bunifuCards4.Controls.Add(this.screenshotbtn);
+            this.bunifuCards4.Controls.Add(this.pthlbl);
+            this.bunifuCards4.Controls.Add(this.pathlbl);
             this.bunifuCards4.Controls.Add(this.indexlbl);
             this.bunifuCards4.LeftSahddow = false;
             this.bunifuCards4.Location = new System.Drawing.Point(2, 368);
             this.bunifuCards4.Name = "bunifuCards4";
             this.bunifuCards4.RightSahddow = true;
             this.bunifuCards4.ShadowDepth = 20;
-            this.bunifuCards4.Size = new System.Drawing.Size(191, 38);
+            this.bunifuCards4.Size = new System.Drawing.Size(191, 53);
             this.bunifuCards4.TabIndex = 1;
             // 
             // indextbx
@@ -543,12 +550,51 @@
             this.indexlbl.Text = "AutoIndex";
             this.indexlbl.Visible = false;
             // 
+            // pathlbl
+            // 
+            this.pathlbl.AutoSize = true;
+            this.pathlbl.Font = new System.Drawing.Font("Arial Rounded MT Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pathlbl.ForeColor = System.Drawing.Color.White;
+            this.pathlbl.Location = new System.Drawing.Point(7, 35);
+            this.pathlbl.Name = "pathlbl";
+            this.pathlbl.Size = new System.Drawing.Size(30, 12);
+            this.pathlbl.TabIndex = 1;
+            this.pathlbl.Text = "Path";
+            this.pathlbl.Visible = false;
+            // 
+            // Pathbtn
+            // 
+            this.Pathbtn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(19)))), ((int)(((byte)(30)))), ((int)(((byte)(40)))));
+            this.Pathbtn.Image = ((System.Drawing.Image)(resources.GetObject("Pathbtn.Image")));
+            this.Pathbtn.ImageActive = null;
+            this.Pathbtn.Location = new System.Drawing.Point(37, 35);
+            this.Pathbtn.Margin = new System.Windows.Forms.Padding(0);
+            this.Pathbtn.Name = "Pathbtn";
+            this.Pathbtn.Size = new System.Drawing.Size(15, 15);
+            this.Pathbtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Pathbtn.TabIndex = 0;
+            this.Pathbtn.TabStop = false;
+            this.Pathbtn.Visible = false;
+            this.Pathbtn.Zoom = 10;
+            this.Pathbtn.Click += new System.EventHandler(this.Pathbtn_Click);
+            // 
+            // pthlbl
+            // 
+            this.pthlbl.AutoSize = true;
+            this.pthlbl.Font = new System.Drawing.Font("Arial Rounded MT Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pthlbl.ForeColor = System.Drawing.Color.White;
+            this.pthlbl.Location = new System.Drawing.Point(55, 35);
+            this.pthlbl.Name = "pthlbl";
+            this.pthlbl.Size = new System.Drawing.Size(0, 12);
+            this.pthlbl.TabIndex = 1;
+            this.pthlbl.Visible = false;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Red;
-            this.ClientSize = new System.Drawing.Size(194, 407);
+            this.ClientSize = new System.Drawing.Size(194, 424);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bunifuCards4);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -556,6 +602,7 @@
             this.ShowInTaskbar = false;
             this.Text = "Form2";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form2_FormClosing);
             this.Load += new System.EventHandler(this.Form2_Load);
             this.panel1.ResumeLayout(false);
             this.bunifuCards2.ResumeLayout(false);
@@ -569,6 +616,7 @@
             this.bunifuCards4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotsetting)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenshotbtn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Pathbtn)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -607,5 +655,8 @@
         private Bunifu.Framework.UI.BunifuCheckbox autoindex;
         private Bunifu.Framework.UI.BunifuCustomLabel indexlbl;
         private Bunifu.Framework.UI.BunifuMetroTextbox indextbx;
+        private Bunifu.Framework.UI.BunifuImageButton Pathbtn;
+        private Bunifu.Framework.UI.BunifuCustomLabel pathlbl;
+        private Bunifu.Framework.UI.BunifuCustomLabel pthlbl;
     }
 }

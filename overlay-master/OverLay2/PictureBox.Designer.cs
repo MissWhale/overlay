@@ -51,6 +51,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.pictureBox1);
             this.Name = "PictureBox";
+            this.ShowIcon = false;
             this.Text = "PictureBox";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PictureBox_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

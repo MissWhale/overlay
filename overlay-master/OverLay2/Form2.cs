@@ -72,12 +72,18 @@ namespace OverLay2
                 autoindex.Hide();
                 indexlbl.Hide();
                 indextbx.Hide();
+                pathlbl.Hide();
+                Pathbtn.Hide();
+                pthlbl.Hide();
             }
             else
             {
                 autoindex.Show();
                 indexlbl.Show();
                 indextbx.Show();
+                pathlbl.Show();
+                Pathbtn.Show();
+                pthlbl.Show();
             }
         }
         private void autoindex_OnChange(object sender, EventArgs e)
@@ -102,6 +108,20 @@ namespace OverLay2
         private void indextbx_KeyUp(object sender, KeyEventArgs e)
         {
             PictureBox.imagenumber = int.Parse(this.indextbx.Text);
+        }
+
+        private void Pathbtn_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.SelectedPath = @"C:\";    // 열 때 폴더를 지정하려면 이런식으로..(추가)
+            dialog.ShowDialog();
+            PictureBox.path= dialog.SelectedPath;
+            pthlbl.Text= dialog.SelectedPath;
+        }
+
+        private void Form2_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.checks.Abort();
         }
     }
 }

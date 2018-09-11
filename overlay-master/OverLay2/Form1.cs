@@ -17,6 +17,7 @@ namespace OverLay2
 {
     public partial class Form1 : Form
     {
+
         [DllImport("user32.dll")]
         private static extern int RegisterHotKey(int hwnd, int id, int fsModifiers, int vk);
         [DllImport("user32.dll")]
@@ -24,7 +25,8 @@ namespace OverLay2
         public hardeware hard = new hardeware();
         public Thread checksystem;
         public static int totalm = 0;
-        public Form2 showForm = new Form2();
+        public static bool pic = true;
+        //public Form2 showForm = new Form2(this);
         public Form1()
         {
             InitializeComponent();
@@ -35,7 +37,7 @@ namespace OverLay2
             CheckForIllegalCrossThreadCalls = false;
             this.notifyIcon1.Visible = true;
             notifyIcon1.ContextMenuStrip = contextMenuStrip1;
-            RegisterHotKey((int)this.Handle, 0, 0x0, (int)Keys.F9);
+            RegisterHotKey((int)this.Handle, 0, 0x0, (int)Keys.F10);
             Bunifu.Framework.Lib.Elipse.Apply(this, 20);
             Bunifu.Framework.Lib.Elipse.Apply(this.header, 5);
             checksystem = new Thread(check);
@@ -50,10 +52,21 @@ namespace OverLay2
             {
                 if (m.WParam == (IntPtr)0x0) 
                 {
-                    PictureBox picture = new PictureBox();
-                    picture.domaincapture();
+                    if (GetForm("PictureBox")==null)
+                    {
+                        PictureBox picture = new PictureBox();
+                        picture.domaincapture();
+                    }
                 }
             }
+        }
+        public static Form GetForm(string formName)
+        {
+            foreach (Form frm in Application.OpenForms)
+                if (frm.Name == formName)
+                    return frm;
+
+            return null;
         }
         private void check()
         {
@@ -90,6 +103,8 @@ namespace OverLay2
             //showForm.checks.Abort();
             UnregisterHotKey((int)this.Handle, 0);
             Application.Exit();
+            //MessageBox.Show(showForm.checks.ThreadState.ToString());
+               
         }
     }
 }

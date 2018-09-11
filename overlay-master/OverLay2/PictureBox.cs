@@ -19,6 +19,7 @@ namespace OverLay2
         bool ishold = false;
         public static int idxcheck = 0;
         public static int imagenumber = 1;
+        public static string path = null;
 
         Rectangle rect = new Rectangle();
         public PictureBox()
@@ -79,30 +80,37 @@ namespace OverLay2
                     string imagename;
                     ishold = false;
                     Rectangle r = rect;
-                    Bitmap b = new Bitmap(r.Width, r.Height);
-                    Graphics g = Graphics.FromImage(b);
-                    g.CopyFromScreen(r.Left, r.Top, 0, 0, b.Size);
-                    pictureBox1.Size = new Size(0, 0);
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
-                    saveFileDialog.Title = "저장경로 지정하세요";
-                    saveFileDialog.OverwritePrompt = true;
-                    saveFileDialog.Filter = "PNG File(*.png) | *.png";
-                    if (idxcheck == 1)
+                    if(r.Height<0 || r.Width < 0)
                     {
-                        saveFileDialog.FileName = imagenumber.ToString()+".png";
-                        imagename = saveFileDialog.FileName.ToString();
-                        b.Save(imagename);
-                        imagenumber++;
+                        MessageBox.Show("크기가 잘못되었습니다.");
                     }
                     else
                     {
-                        if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                        Bitmap b = new Bitmap(r.Width, r.Height);
+                        Graphics g = Graphics.FromImage(b);
+                        g.CopyFromScreen(r.Left, r.Top, 0, 0, b.Size);
+                        pictureBox1.Size = new Size(0, 0);
+                        SaveFileDialog saveFileDialog = new SaveFileDialog();
+                        saveFileDialog.Title = "저장경로 지정하세요";
+                        saveFileDialog.OverwritePrompt = true;
+                        saveFileDialog.Filter = "PNG File(*.png) | *.png";
+                        if (idxcheck == 1)
                         {
-                            imagename = saveFileDialog.FileName.ToString();
+                            saveFileDialog.FileName = imagenumber.ToString() + ".png";
+                            imagename = path + @"\" + saveFileDialog.FileName.ToString();
                             b.Save(imagename);
+                            imagenumber++;
                         }
+                        else
+                        {
+                            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                            {
+                                imagename = saveFileDialog.FileName.ToString();
+                                b.Save(imagename);
+                            }
+                        }
+                        b.Dispose();
                     }
-                    b.Dispose();
                     this.Close();
                 }
             }
